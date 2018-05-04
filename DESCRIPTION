@@ -11,11 +11,7 @@ Imports:
     mvtnorm, 
     nlme, 
     stats, 
-<<<<<<< HEAD
     utils
-=======
-    utils 
->>>>>>> parent of 8a12b85... is.validvarcov is expensive.  minimize calls to it
 Suggests: 
     broom,
     Formula, 
