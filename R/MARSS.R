@@ -16,7 +16,7 @@ MARSS = function(y,
   if(!method %in% allowed.methods){
     stop(paste("method must be one of:", allowed.methods))
   }
-    ## Start by checking the data, since if the data have major problems then the rest of the code
+  ## Start by checking the data, since if the data have major problems then the rest of the code
   ## will have problems
   if(!missing(miss.value)){
     stop("miss.value is deprecated in MARSS.  Replace missing values in y with NA.\n")
@@ -146,7 +146,7 @@ MARSS = function(y,
       }
       #MLEobj$Ey=Eytest
     }
-        
+    
     if(!fit) MLEobj$convergence=3
     
     if(fit) {

@@ -85,7 +85,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
       msg = c(msg, "Element ", fnames[!(fnames %in% par.names)], " in ", elem, " is missing from the par.names attribute of the model object.\n", sep="")
     }
   }
-
+  
   ###########################
   # Check that model dims have all the par.names
   ###########################
@@ -119,9 +119,9 @@ is.marssMODEL <- function(MODELobj, method="kem") {
   ###########################
   TT=dim(MODELobj$data)[2]
   if(attr(MODELobj,"model.dims")$y[2]!=TT | attr(MODELobj,"model.dims")$x[2]!=TT |
-       attr(MODELobj,"model.dims")$w[2]!=TT | attr(MODELobj,"model.dims")$v[2]!=TT )
+     attr(MODELobj,"model.dims")$w[2]!=TT | attr(MODELobj,"model.dims")$v[2]!=TT )
     msg=c(msg,"The 2nd element of the model.dims attribute for x, y, w, and v must equal the number of time points in the data.\n")
-
+  
   if(!is.null(msg)){  #rest of the tests won't work so stop now
     msg=c("\nErrors were caught in is.marssMODEL()\n", msg)
     return(msg)
@@ -148,7 +148,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     msg=c("\nErrors were caught in is.marssMODEL()\n", msg)
     return(msg)
   }
-
+  
   ###########################
   # Check that 1st and 2nd dims of fixed ok, and 1st dim of free are ok
   ###########################
@@ -174,7 +174,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
       msg = c(msg, paste("free", bad.names, "dims are incorrect. Dim 1 be ", model.dims[bad.names], "x", model.dims[bad.names],"based on data and other parameters.\n"))
     }
   }
-
+  
   ###########################
   # Check that 3rd dims of fixed and free are 1 or TT
   ###########################
@@ -189,7 +189,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     dim.fixed = c(dim.fixed, dim.fixed.flag)
     dim.free = c(dim.free, dim.free.flag) 
   }  
-
+  
   if (any(c(dim.fixed, dim.free))) {  #There's a problem
     if(any(dim.fixed)) {
       msg = c(msg, paste("fixed", par.names[dim.fixed], "dims are incorrect. Dim 3 should be 1 or the number of time steps in the data.\n"))
@@ -200,7 +200,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     msg=c("\nErrors were caught in is.marssMODEL()\n", msg)
     return(msg)
   }
-
+  
   ###########################
   # Check that free has column names since these are the parameter names
   ###########################
@@ -208,7 +208,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
   if(any(no.colnames.free)) {
     msg = c(msg, paste("free", par.names[no.colnames.free], "is missing column names.\n"))
   }
-
+  
   ###########################
   # Check data and missing values consistency if data present
   # as.numeric(NA) is the missing value
@@ -218,7 +218,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     if(!identical(bad.val, as.numeric(NA)) && ( bad.val %in% MODELobj$data ) ){  
       msg = c(msg, paste("Data cannot have ", bad.val,". \n",sep="")) }
   }
-
+  
   ###########################
   # Y.names against rownames of data.  They should be identical; otherwise something got scrambled
   ###########################
@@ -234,7 +234,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     msg=c("\nErrors were caught in is.marssMODEL()\n", msg)
     return(msg)
   }
-
+  
   ###########################
   # Last Check that fixed, free, par.names are complete and consistent
   # This is form dependent so the MARSS.form file needs to include a is.marssMODEL_form() function
@@ -248,7 +248,7 @@ is.marssMODEL <- function(MODELobj, method="kem") {
   }else{ 
     msg=c(msg, paste("No is.marssMODEL_", form[1], " is available to test the model object.\n", sep=""))
   }
-
+  
   ###########################
   # Check diffuse; must be TRUE or FALSE
   ###########################
@@ -259,6 +259,6 @@ is.marssMODEL <- function(MODELobj, method="kem") {
     msg=c("\nErrors were caught in is.marssMODEL()\n", msg)
     return(msg)
   }
-   
+  
 }
 

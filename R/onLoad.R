@@ -1,7 +1,7 @@
 ## Set up env for globals and some globals
 .onLoad <- function(libname, pkgname) {
   assign("pkg_globals", new.env(), envir=parent.env(environment()))
-
+  
   kem.methods=c("kem")
   optim.methods=c("BFGS","BFGS-kf")       
   allowed.methods = c(kem.methods, optim.methods)

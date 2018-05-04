@@ -5,13 +5,13 @@
 #   samp.size, num.params
 #######################################################################################################
 MARSSaic = function(MLEobj, output=c("AIC","AICc"), Options=list(nboot=1000, return.logL.star=FALSE,
-  silent=FALSE)) {
+                                                                 silent=FALSE)) {
   # Options$nboot is the number of bootstrap replicates to do
   # mssm.model is a specified model (needs the structure and parameter elements of the list)
   # output tells what output to produce; this can be a vector  if multiple items should be returned
   #      AIC, AICc, AICbp, AICbb, AICi, boot.params
   # silent is a flag to indicate whether the progress bar should be printed
-
+  
   if(!is.list(Options)){
     msg = " Options argument must be passed in as a list.\n"
     cat("\nErrors were caught in MARSSaic \n", msg, sep="") 
@@ -25,15 +25,15 @@ MARSSaic = function(MLEobj, output=c("AIC","AICc"), Options=list(nboot=1000, ret
   if(!isTRUE(tmp)) {
     if(!Options$silent) cat(tmp)
     stop("Stopped in MARSSaic() due to problem(s) with the MLE object passed in.\n", call.=FALSE)
-    }
-    
+  }
+  
   if(is.null(MLEobj[["logLik"]])){
     msg = " No log likelihood.  This function expects a model fitted via maximum-likelihood.\n"
     cat("\n","Errors were caught in MARSSaic \n", msg, sep="") 
     stop("Stopped in MARSSaic() due to problem(s) with the MLE object passed in.\n", call.=FALSE)
-    }
+  }
   return.list=list()
-
+  
   ## Some renaming for readability
   model = MLEobj$marss
   #kf = MLEobj$kf
@@ -52,28 +52,28 @@ MARSSaic = function(MLEobj, output=c("AIC","AICc"), Options=list(nboot=1000, ret
     MLEobj$samp.size = samp.size 
     MLEobj$num.params = K
   }
-
+  
   ##### AICbb & AICbp  
   method = c("AICbb","AICbp") 
-
+  
   for (m in method[which(method %in% output)]) {
     bootstrap.method = switch(m,
-			AICbb = "innovations",
-			AICbp = "parametric")
+                              AICbb = "innovations",
+                              AICbp = "parametric")
     logL.star=0
-
+    
     drawProgressBar = FALSE #If the time library is not installed, no prog bar
     if(!Options$silent) { #then we can draw a progress bar
-       cat(paste(m, "calculation in progress...\n"))
-       prev = progressBar()
-       drawProgressBar = TRUE
+      cat(paste(m, "calculation in progress...\n"))
+      prev = progressBar()
+      drawProgressBar = TRUE
     }
-
+    
     boot.params = MARSSboot(MLEobj, nboot=Options$nboot, output="parameters", sim=bootstrap.method,
-          param.gen="MLE", silent=TRUE)$boot.params
-
+                            param.gen="MLE", silent=TRUE)$boot.params
+    
     if((bootstrap.method == "parametric") && ("boot.params" %in% output)) MLEobj$boot.params = boot.params
-
+    
     for(i in 1:Options$nboot) {
       boot.model = MARSSvectorizeparam( MLEobj, parvec=boot.params[,i] )  #boot.model is a MLEobj
       logL.star[i] = MARSSkf(boot.model, only.logLik=TRUE)$logLik	
@@ -85,6 +85,6 @@ MARSSaic = function(MLEobj, output=c("AIC","AICc"), Options=list(nboot=1000, ret
       MLEobj[[tmp]] = logL.star
     }
   }
-
-return(MLEobj)
+  
+  return(MLEobj)
 }

@@ -4,7 +4,7 @@
 #  and passing model.loc to parmat
 ##############################################################################################################################################
 coef.marssMLE <- function (object, ..., type="list", form=NULL, what="par") {
-#First make sure specified equation form has a corresponding function to do the conversion form=marss object
+  #First make sure specified equation form has a corresponding function to do the conversion form=marss object
   return.obj=list()
   if(class(object)!="marssMLE"){
     stop("Stopped in coef.marssMLE() because the function needs a marssMLE object.\n", call.=FALSE)
@@ -21,23 +21,23 @@ coef.marssMLE <- function (object, ..., type="list", form=NULL, what="par") {
   coef.fun = paste("coef_",form[1],sep="")
   tmp=try(exists(coef.fun,mode="function"),silent=TRUE)
   if(isTRUE(tmp)){
-      #the coef function returns an updated object based on form
-      #the par element is updated and $model is put in form=form (if needed)
-      modified.object=eval(call(coef.fun, object))
-    }else{ modified.object=coef_marss(object) } #if no coef function then just go with marss
+    #the coef function returns an updated object based on form
+    #the par element is updated and $model is put in form=form (if needed)
+    modified.object=eval(call(coef.fun, object))
+  }else{ modified.object=coef_marss(object) } #if no coef function then just go with marss
   #now model and par are both are in the same form
-   model=modified.object[["model"]]
-   fixed=model[["fixed"]]
-   free=model[["free"]]
-   pars=modified.object[[what]]
-
-   par.names=attr(model,"par.names")
-   model.names=attr(model,"obj.elements")
-   
-if(!(type %in% c("vector", "list", "par", "matrix", par.names, model.names)))
-  stop("Stopped in coef.marssMLE(): The 'type' argument can be \"vector\", \"list\", \"par\", or \"matrix\".\n", call.=FALSE)
-
-   
+  model=modified.object[["model"]]
+  fixed=model[["fixed"]]
+  free=model[["free"]]
+  pars=modified.object[[what]]
+  
+  par.names=attr(model,"par.names")
+  model.names=attr(model,"obj.elements")
+  
+  if(!(type %in% c("vector", "list", "par", "matrix", par.names, model.names)))
+    stop("Stopped in coef.marssMLE(): The 'type' argument can be \"vector\", \"list\", \"par\", or \"matrix\".\n", call.=FALSE)
+  
+  
   for(the.type in type){ #type is what kind of coef to show
     if(the.type=="list"){
       return.obj[[the.type]]=pars
@@ -46,16 +46,16 @@ if(!(type %in% c("vector", "list", "par", "matrix", par.names, model.names)))
       paramvector = NULL
       for(elem in par.names){
         if(dim(pars[[elem]])[1]>0){ #there are estimates
-        mat.names = colnames(free[[elem]])
-        tmp = as.vector(pars[[elem]]) 
-        mat.names = paste(rep(elem, length(mat.names)), rep(".", length(mat.names)), mat.names, sep="")
-        names(tmp) = mat.names
-        paramvector = c(paramvector, tmp)
+          mat.names = colnames(free[[elem]])
+          tmp = as.vector(pars[[elem]]) 
+          mat.names = paste(rep(elem, length(mat.names)), rep(".", length(mat.names)), mat.names, sep="")
+          names(tmp) = mat.names
+          paramvector = c(paramvector, tmp)
         }
       }
       return.obj[[the.type]]=paramvector
     }
-
+    
     par.dims=attr(object[["model"]],"model.dims")
     if(the.type == "matrices" | the.type=="matrix"){
       par.mat=list()
@@ -77,10 +77,10 @@ if(!(type %in% c("vector", "list", "par", "matrix", par.names, model.names)))
   if(length(return.obj)==0) return.obj=NULL
   if(length(return.obj)==1) return.obj=return.obj[[1]]
   return(return.obj)
-   
- }  #end of coef.marssMLE
- 
- coef_marss = function(x){
-   #if form=marss, that means $model is in marss form, so just put the $marss there.
-   x$model = x$marss
-   return(x) }
+  
+}  #end of coef.marssMLE
+
+coef_marss = function(x){
+  #if form=marss, that means $model is in marss form, so just put the $marss there.
+  x$model = x$marss
+  return(x) }

@@ -60,7 +60,7 @@ MARSS.marss=function(MARSS.call){
                        B="identity", U="unconstrained", Q="diagonal and unequal", 
                        x0="unconstrained", V0="zero", G="identity", H="identity", L="identity",
                        tinitx=0, diffuse=FALSE)
-    
+  
   #This checks that what user passed in model list can be interpreted and converted to form marss
   #if no errors, it updates the model list by filling in missing elements with the defaults
   MARSS.call$model=checkModelList( MARSS.call$model, model.defaults, model.allowed )
@@ -198,7 +198,7 @@ MARSS.marss=function(MARSS.call){
     stop("Stopped in MARSS.marss() due to problem(s) with model specification.\n", call.=FALSE)
   }
   #end of error section  
-    
+  
   
   ##Translate the text shortcuts into a marssMODEL object 
   ## Translate the model structure names (shortcuts) into fixed and free
@@ -285,7 +285,7 @@ MARSS.marss=function(MARSS.call){
     #set the last dim of the model.dims since it was at a temp value to start
     model.dims[[el]][3]=max(dim(free[[el]])[3],dim(fixed[[el]])[3])
   }
-    
+  
   
   #Set the marssMODEL form marss
   #This is the f+Dp form for the MARSS model used for user displays, printing and such
@@ -304,7 +304,7 @@ MARSS.marss=function(MARSS.call){
   #Put the marss model into model and marss
   MARSS.call$model = marss_object
   MARSS.call$marss=marss_object
-    
+  
   ## Return MARSS call list with $marss and $model added
   MARSS.call
 }
@@ -387,10 +387,10 @@ describe_marss = function(MODELobj, model.elem=NULL){
           dimm=sqrt(dim(fixed[[elem]])[1])
           if(
             all(fixed[[elem]]==0) &
-              all(unlist(tmp.mat[upper.tri(tmp.mat)])==unlist(t(tmp.mat)[upper.tri(tmp.mat)])) & 
-              is.design(free[[elem]]) & 
-              length(unique(unlist(tmp.mat[upper.tri(tmp.mat)])))==dimm*(dimm-1)/2 &
-              length(unique(unlist(diag(tmp.mat))))==dimm )
+            all(unlist(tmp.mat[upper.tri(tmp.mat)])==unlist(t(tmp.mat)[upper.tri(tmp.mat)])) & 
+            is.design(free[[elem]]) & 
+            length(unique(unlist(tmp.mat[upper.tri(tmp.mat)])))==dimm*(dimm-1)/2 &
+            length(unique(unlist(diag(tmp.mat))))==dimm )
           { constr.type[[elem]] = "unconstrained"; break } 
         }
         if(is.diagonal(tmp.mat)) {
@@ -558,10 +558,10 @@ is.marssMODEL_marss <- function(MODELobj, method="kem"){
       tmp=is.validvarcov(par.as.list, method=method)
       varcov.flag=varcov.flag & tmp$ok
       if(!tmp$ok) varcov.msg = c(varcov.msg, paste(" ", tmp$error, "at t=", i, "\n",sep=""))
-            
+      
       if(!varcov.flag) msg = c(msg, paste("The variance-covariance matrix ", elem, " is not properly constrained.\n", sep=""), varcov.msg)
     } #end for loop over time
-
+    
   } #end for loop over elements
   
   ###########################
@@ -590,7 +590,7 @@ is.marssMODEL_marss <- function(MODELobj, method="kem"){
     
   } #end for loop over elements
   
-
+  
   if(length(msg) == 0){ return(NULL)
   }else {
     msg=c("\nErrors were caught in is.marssMODEL_marss()\n", msg)

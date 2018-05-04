@@ -125,8 +125,8 @@ MARSS.marxss=function(MARSS.call){
   
   X.names=NULL
   if(!(is.null(model[["X.names"]]))) X.names = model[["X.names"]]
-    if(is.null(X.names) & identical(model$Z,"identity"))
-      X.names=paste("X.",Y.names,sep="")
+  if(is.null(X.names) & identical(model$Z,"identity"))
+    X.names=paste("X.",Y.names,sep="")
   if( is.null(X.names) & is.array(model$Z)){
     if(length(dim(model$Z))==3)
       if(dim(model$Z)[3]==1)
@@ -147,7 +147,7 @@ MARSS.marxss=function(MARSS.call){
   ## error checking later will complain if C and c (or D and d) conflict
   if (is.array(model$C)) c1 = dim(model$C)[2] else c1 = 1
   if (is.array(model$D)) d1 = dim(model$D)[2] else d1 = 1
-
+  
   ## Set based on G and H specification
   ## error checking later will complain if conflict
   if (is.array(model$G)) g1 = dim(model$G)[2] else g1 = m
@@ -261,8 +261,8 @@ MARSS.marxss=function(MARSS.call){
         }
       }else{ #is matrix
         if( !(dim(model[[el]])[2] == 1 | dim(model[[el]])[2] == TT) ){
-        problem=TRUE
-        msg = c(msg, paste(" ",el,"must be a 2D matrix with 2nd dim equal to 1 or T (length of data).\n"))
+          problem=TRUE
+          msg = c(msg, paste(" ",el,"must be a 2D matrix with 2nd dim equal to 1 or T (length of data).\n"))
         }
       }
     }
@@ -278,9 +278,9 @@ MARSS.marxss=function(MARSS.call){
   #If 2D matrix, change c and d to array so that it can be handled by the normal fixed/free constructions
   for(el in c("c","d")){
     if(is.matrix(model[[el]])){
-    row.names=rownames(model[[el]])
-    model[[el]]=array(model[[el]],dim=c(dim(model[[el]])[1],1,dim(model[[el]])[2]))
-    rownames(model[[el]])=row.names
+      row.names=rownames(model[[el]])
+      model[[el]]=array(model[[el]],dim=c(dim(model[[el]])[1],1,dim(model[[el]])[2]))
+      rownames(model[[el]])=row.names
     }
   }
   
@@ -325,11 +325,11 @@ MARSS.marxss=function(MARSS.call){
       tmp[[el]]=array(NA,dim=c(model.dims[[el]][1],model.dims[[el]][2])) 
       if(el %in% c("Q","R","V0")){  #variance-covariance matrices
         dim.mat = model.dims[[el]][1]
-#         for(i in 1:dim.mat){
-#           for(j in 1:dim.mat) tmp[[el]][i,j]=tmp[[el]][j,i]=paste("(",i,",",j,")",sep="") #paste(el,"(",i,",",j,")",sep="")
-#         }
-          tmp[[el]]=matrix(paste("(",rep(1:dim.mat,dim.mat),",",rep(1:dim.mat,each=dim.mat),")",sep=""),dim.mat,dim.mat)
-          tmp[[el]][upper.tri(tmp[[el]])] = t(tmp[[el]])[upper.tri(t(tmp[[el]]))]  
+        #         for(i in 1:dim.mat){
+        #           for(j in 1:dim.mat) tmp[[el]][i,j]=tmp[[el]][j,i]=paste("(",i,",",j,")",sep="") #paste(el,"(",i,",",j,")",sep="")
+        #         }
+        tmp[[el]]=matrix(paste("(",rep(1:dim.mat,dim.mat),",",rep(1:dim.mat,each=dim.mat),")",sep=""),dim.mat,dim.mat)
+        tmp[[el]][upper.tri(tmp[[el]])] = t(tmp[[el]])[upper.tri(t(tmp[[el]]))]  
       }else{ #not var-cov matrix
         row.name=1:model.dims[[el]][1]
         col.name=1:model.dims[[el]][2]
@@ -340,12 +340,12 @@ MARSS.marxss=function(MARSS.call){
           if(el=="D") row.name=Y.names
           if(!is.null(rownames(model[[tolower(el)]]))) col.name=rownames(model[[tolower(el)]])
         }
-#         for(i in 1:model.dims[[el]][1]){
-#           for(j in 1:model.dims[[el]][2]){
-#             if(model.dims[[el]][2]>1) tmp[[el]][i,j]=paste("(",row.name[i],",",col.name[j],")",sep="") #paste(el,"(",row.name[i],",",col.name[j],")",sep="")
-#             else tmp[[el]][i,j]=paste(row.name[i],sep=",") #paste(el,row.name[i],sep=",")
-#           }
-#         }
+        #         for(i in 1:model.dims[[el]][1]){
+        #           for(j in 1:model.dims[[el]][2]){
+        #             if(model.dims[[el]][2]>1) tmp[[el]][i,j]=paste("(",row.name[i],",",col.name[j],")",sep="") #paste(el,"(",row.name[i],",",col.name[j],")",sep="")
+        #             else tmp[[el]][i,j]=paste(row.name[i],sep=",") #paste(el,row.name[i],sep=",")
+        #           }
+        #         }
         if(model.dims[[el]][2]>1){
           tmp[[el]]=matrix(paste("(",rep(row.name,model.dims[[el]][2]),",",rep(col.name,each=model.dims[[el]][1]),")",sep=""),model.dims[[el]][1],model.dims[[el]][2])
         }else{
@@ -406,7 +406,7 @@ MARSS.marxss=function(MARSS.call){
   attr(marxss_object, "X.names")=X.names
   attr(marxss_object, "Y.names")=Y.names
   attr(marxss_object, "equation")="x_{t}=B_{t}*x_{t-1}+U_{t}+C_{t}*c_{t}+G{t}*w_{t}; w_{t}~MVN(0,Q_{t})\ny_{t}=Z_{t}*x_{t}+A_{t}+D_{t}*d_{t}+H{t}*v_{t}; v_{t}~MVN(0,R_{t})"
-
+  
   #Change alldefaults global to match the form
   #first load the defaults
   alldefaults=get("alldefaults", envir=pkg_globals)
@@ -488,36 +488,36 @@ marss_to_marxss=function(x, C.and.D.are.zero=FALSE){
     attr(marxss.model, "equation")="x_{t}=B_{t}*x_{t-1}+U_{t}+C_{t}*c_{t}+G{t}*w_{t}; w_{t}~MVN(0,Q_{t})\ny_{t}=Z_{t}*x_{t}+A_{t}+D_{t}*d_{t}+H{t}*v_{t}; v_{t}~MVN(0,R_{t})"
   }
   if(class(x)=="marssMODEL") return(marxss.model) #in marxss form
-
+  
   x[["model"]]=marxss.model #now in marxss form
   marxss.dims = attr(marxss.model, "model.dims")
   
   #got here, so class of x is marssMLE
-    for(val in c("par","start","par.se","par.bias","par.upCI","par.lowCI")){
-      if(!is.null(x[[val]])){
-          tmp.dim=dim(marxss.model$free$C)[2] #how many C parameters
-        if(tmp.dim==0){
-          x[[val]][["C"]] = matrix(0,0,1)
-        }else{
-          #because marss.U is [marxss.C marxss.U]
-          x[[val]][["C"]] = x[[val]][["U"]][1:tmp.dim,, drop=FALSE]
-          x[[val]][["U"]] = x[[val]][["U"]][-(1:tmp.dim),, drop=FALSE]
-        }
-          tmp.dim=dim(marxss.model$free$D)[2] #how many D parameters
-        if(tmp.dim==0){
-          x[[val]][["D"]] = matrix(0,0,1)
-        }else{
-          #because marss.A is [marxss.D marxss.A]
-          x[[val]][["D"]] = x[[val]][["A"]][1:tmp.dim,, drop=FALSE]
-          x[[val]][["A"]] = x[[val]][["A"]][-(1:tmp.dim),, drop=FALSE]
-        }
-        for(el in c("c","d")){
-          x[[val]][[el]] = matrix(0,0,1) #because c and d are inputs not estimated
-        }
-      } #not is null val
-    } #for val in par, start
-
-    #returning a marssMLE object where the par, start etc are in marxss form
+  for(val in c("par","start","par.se","par.bias","par.upCI","par.lowCI")){
+    if(!is.null(x[[val]])){
+      tmp.dim=dim(marxss.model$free$C)[2] #how many C parameters
+      if(tmp.dim==0){
+        x[[val]][["C"]] = matrix(0,0,1)
+      }else{
+        #because marss.U is [marxss.C marxss.U]
+        x[[val]][["C"]] = x[[val]][["U"]][1:tmp.dim,, drop=FALSE]
+        x[[val]][["U"]] = x[[val]][["U"]][-(1:tmp.dim),, drop=FALSE]
+      }
+      tmp.dim=dim(marxss.model$free$D)[2] #how many D parameters
+      if(tmp.dim==0){
+        x[[val]][["D"]] = matrix(0,0,1)
+      }else{
+        #because marss.A is [marxss.D marxss.A]
+        x[[val]][["D"]] = x[[val]][["A"]][1:tmp.dim,, drop=FALSE]
+        x[[val]][["A"]] = x[[val]][["A"]][-(1:tmp.dim),, drop=FALSE]
+      }
+      for(el in c("c","d")){
+        x[[val]][[el]] = matrix(0,0,1) #because c and d are inputs not estimated
+      }
+    } #not is null val
+  } #for val in par, start
+  
+  #returning a marssMLE object where the par, start etc are in marxss form
   # $model is in marxss and $marss stays the same
   return(x) 
 }
@@ -547,15 +547,15 @@ marxss_to_marss=function(x, only.par=FALSE){
     #this will go through x and reset any par-like obj in marxss form
     for(val in c("par","start","par.se","par.bias","par.upCI","par.lowCI")){
       if(!is.null(x[[val]])){
-          #because marss.U is [marxss.C marxss.U]
-          x.marss[[val]][["U"]] = rbind(x[[val]][["C"]],x[[val]][["U"]])
-          #because marss.A is [marxss.D marxss.A]
-          x.marss[[val]][["A"]] = rbind(x[[val]][["D"]],x[[val]][["A"]])
-          #other elements are the same as for marxss
-          for(el in c("R","Q","B","Z","x0","V0","G","H","L"))
-            x.marss[[val]][[el]]=x[[val]][[el]]
-          #reset x[[val]] so it only includes the marss elements
-          x[[val]]=x.marss[[val]] #replace the x[[val]] with marss version
+        #because marss.U is [marxss.C marxss.U]
+        x.marss[[val]][["U"]] = rbind(x[[val]][["C"]],x[[val]][["U"]])
+        #because marss.A is [marxss.D marxss.A]
+        x.marss[[val]][["A"]] = rbind(x[[val]][["D"]],x[[val]][["A"]])
+        #other elements are the same as for marxss
+        for(el in c("R","Q","B","Z","x0","V0","G","H","L"))
+          x.marss[[val]][[el]]=x[[val]][[el]]
+        #reset x[[val]] so it only includes the marss elements
+        x[[val]]=x.marss[[val]] #replace the x[[val]] with marss version
       } #not is null val
     } #for val in par, start
     
@@ -659,10 +659,10 @@ marxss_to_marss=function(x, only.par=FALSE){
   marss.dims = marxss.dims[!(names(marxss.dims) %in% c("C","c","D","d"))]
   marss.dims$U=c(m,1,dim3s[["U"]])
   marss.dims$A=c(n,1,dim3s[["A"]])
-#   marss.dims = list(data=c(n,TT),x=c(m,TT),y=c(n,TT),w=c(m,TT),v=c(n,TT),
-#                     Z=c(n,m,dim3s[["Z"]]),U=c(m,1,dim3s[["U"]]),A=c(n,1,dim3s[["A"]]),
-#                     B=c(m,m,dim3s[["B"]]),Q=c(m,m,dim3s[["Q"]]),R=c(n,n,dim3s[["R"]]),
-#                     x0=c(m,1,1),V0=c(m,m,1))
+  #   marss.dims = list(data=c(n,TT),x=c(m,TT),y=c(n,TT),w=c(m,TT),v=c(n,TT),
+  #                     Z=c(n,m,dim3s[["Z"]]),U=c(m,1,dim3s[["U"]]),A=c(n,1,dim3s[["A"]]),
+  #                     B=c(m,m,dim3s[["B"]]),Q=c(m,m,dim3s[["Q"]]),R=c(n,n,dim3s[["R"]]),
+  #                     x0=c(m,1,1),V0=c(m,m,1))
   
   ## Create the marss marssMODEL object
   marss.model = list(fixed=fixed, free=free, data=marxss.model[["data"]], tinitx=marxss.model[["tinitx"]], diffuse=marxss.model[["diffuse"]])
@@ -697,7 +697,7 @@ MARSSinits_marxss = function(MLEobj, inits){
     if(class(MLEobj[["model"]])!="marssMODEL") stop("Stopped in MARSSinits_marxss(): this function needs a marssMODEL in marxss form in $model",call.=FALSE)
     if(!("marxss" %in% attr(MLEobj[["model"]],"form"))) stop("Stopped in MARSSinits_marxss(): this function needs a marssMODEL in marxss form in $model",call.=FALSE)    
   }
-    
+  
   #B, Z, R, Q, x0 and V0 stay the same
   #U and A change
   #this function will return a U and A element for inits
@@ -967,7 +967,7 @@ predict_marxss = function(x, newdata, n.ahead, t.start){
   attr(pred.marxss, "model.dims")=pred.model.dims #the marxss model dims
   
   ##Next step is to create the marssMLE object ready for predict.  This is done by changing x
-
+  
   #These are not estimated when x_(tstart-1) and V_(t.start-1) are fixed at expected values
   for(val in c("par","start")){
     for(el in c("x0","V0")){
@@ -995,7 +995,7 @@ predict_marxss = function(x, newdata, n.ahead, t.start){
   #x is now a marssMLE object with its marss and model changed to reflect newdata
   # with y, c and d potentially changed and t.start and t.end changed and TT changed
   # par$x0 and $V0 changed to reflect t.start
- 
+  
   #return this object to predict.marssMLE; only MLEobj is needed
   #but newdata list returned for debugging
   return(list(MLEobj=x, newdata=newdata))
@@ -1016,7 +1016,7 @@ describe_marxss = function(MODELobj){ describe_marss(MODELobj) }
 is.marssMODEL_marxss <- function(MODELobj, method="kem"){
   
   msg=NULL
-
+  
   if( !("marxss" %in% attr(MODELobj, "form") ) ){ 
     msg = c(msg, "Form attribute of the model object does not include marxss.\n")
   }
@@ -1147,9 +1147,9 @@ is.marssMODEL_marxss <- function(MODELobj, method="kem"){
       
       if(!varcov.flag) msg = c(msg, paste("The variance-covariance matrix ", elem, " is not properly constrained.\n", sep=""), varcov.msg)
     } #end for loop over time
-
+    
   } #end for loop over elements
-
+  
   ###########################
   # Check that crossprod(G), crossprod(H), crossprod(L) are invertible
   ###########################
@@ -1176,10 +1176,10 @@ is.marssMODEL_marxss <- function(MODELobj, method="kem"){
     
   } #end for loop over elements
   
-if(length(msg) == 0){ return(NULL)
-}else {
-  msg=c("\nErrors were caught in is.marssMODEL_marxss()\n", msg)
-  return(msg)
-}
+  if(length(msg) == 0){ return(NULL)
+  }else {
+    msg=c("\nErrors were caught in is.marssMODEL_marxss()\n", msg)
+    return(msg)
+  }
 }
 

@@ -961,8 +961,8 @@ MARSSkem = function( MLEobj ) {
 # 0 converged; 1 not converged; negative problem
 loglog.conv.test = function(iter.record, iter, params.to.test=c("Z","U","x0","R","Q","A","logLik"), deltaT=9, tol=0.5){
   if( !is.list(iter.record) || !all(c("par","logLik") %in% names(iter.record)) || 
-        !any(params.to.test %in% c(names(iter.record$par),names(iter.record))) ||
-        length(dim(iter.record$par))!=2 || dim(iter.record$par)[1]<=1 || is.null(colnames(iter.record$par)) ){ 
+      !any(params.to.test %in% c(names(iter.record$par),names(iter.record))) ||
+      length(dim(iter.record$par))!=2 || dim(iter.record$par)[1]<=1 || is.null(colnames(iter.record$par)) ){ 
     msg="par list not a proper list (with par and logLik) or too short for conv test or has no column names.\n"
     return( list(convergence=-1, messages=msg) )
   }else {
