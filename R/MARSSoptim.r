@@ -41,12 +41,14 @@ MARSSoptim = function(MLEobj) {
     -1*negLL
   }
   
-  if(class(MLEobj)[1]!="marssMLE") {
-    stop("Stopped in MARSSoptim(). Object of class marssMLE is required.\n", call.=FALSE)
+  tmp = is.marssMLE(MLEobj)
+  if(!isTRUE(tmp)) {
+      cat(tmp)
+      stop("Stopped in MARSSoptim() because marssMLE object is incomplete or inconsistent.\n", call.=FALSE)
     }
   for(elem in c("Q","R")){
     if(dim(MLEobj$model$free[[elem]])[3]>1)
-     stop(paste("Stopped in MARSSoptim() because this function does not allow estimated part of ",elem," to be time-varying.\n",sep=""), call.=FALSE)      
+     stop(paste("Stopped in MARSSoptim() because function does not allow estimated part of ",elem," to be time-varying.\n",sep=""), call.=FALSE)      
   }
   #the is.marssMODEL call is.validvarcov() which tests that the blocks are diagonal or unconstrained in the varcov matrices
 
